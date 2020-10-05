@@ -1,10 +1,26 @@
-package Proccesing;
+package com.marek.weatherapp.repositories.model.openweather.daily;
 
-public class Weather {
+public class ForecastWeather {
     private int id;
     private String main;
     private String description;
     private String icon;
+
+    public int getId() {
+        return id;
+    }
+
+    public String getMain() {
+        return main;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
 
     public void setId(int id) {
         this.id = id;

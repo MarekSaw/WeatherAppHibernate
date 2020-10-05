@@ -1,6 +1,6 @@
-package Proccesing;
+package com.marek.weatherapp.repositories.model.openweather.daily;
 
-public class Temp {
+public class ForecastDailyTemp {
     private double day;
     private double min;
     private double max;
@@ -8,12 +8,28 @@ public class Temp {
     private double eve;
     private double morn;
 
-    public double getMax() {
-        return max;
+    public double getDay() {
+        return day;
     }
 
     public double getMin() {
         return min;
+    }
+
+    public double getMax() {
+        return max;
+    }
+
+    public double getNight() {
+        return night;
+    }
+
+    public double getEve() {
+        return eve;
+    }
+
+    public double getMorn() {
+        return morn;
     }
 
     public void setDay(double day) {
