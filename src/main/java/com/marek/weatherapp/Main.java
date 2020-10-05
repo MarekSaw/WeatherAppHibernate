@@ -1,6 +1,9 @@
 package com.marek.weatherapp;
 
 import com.marek.weatherapp.entities.WeatherForecastEntity;
+import com.marek.weatherapp.repositories.WeatherRepository;
+import com.marek.weatherapp.repositories.model.WeatherSource;
+import com.marek.weatherapp.repositories.model.weatherbit.WeatherBitRepository;
 import com.marek.weatherapp.repositories.model.openweather.OpenWeatherRepository;
 import org.apache.commons.cli.*;
 
@@ -13,14 +16,18 @@ public class Main {
 
     public static void main(String[] args) {
 
-        OpenWeatherRepository owr = new OpenWeatherRepository(OpenWeatherRepository.readKey());
 
+        WeatherRepository owr = new OpenWeatherRepository(WeatherRepository.readKey(WeatherSource.OPEN_WEATHER));
 //        WeatherForecastEntity forecastForCity1 = owr.getForecast("London");
-        WeatherForecastEntity forecastForCity2 = owr.getForecast(50.041187, 21.999121, LocalDate.now().plusDays(2));
 //        System.out.println(forecastForCity1);
-        System.out.println(forecastForCity2);
-        callWithCommandLineArguments(owr, args);
 
+//        WeatherForecastEntity forecastForCity2 = owr.getForecast(50.041187, 21.999121, LocalDate.now().plusDays(2));
+//        System.out.println(forecastForCity2);
+
+//        callWithCommandLineArguments(owr, args);
+
+//        WeatherRepository owr = new WeatherBitRepository(WeatherRepository.readKey(WeatherSource.WEATHER_BIT));
+        System.out.println(owr.getForecast("London"));
 
     }
 

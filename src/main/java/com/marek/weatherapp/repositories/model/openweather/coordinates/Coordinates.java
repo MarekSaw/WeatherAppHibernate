@@ -1,4 +1,4 @@
-package com.marek.weatherapp.repositories.model.openweather.weather;
+package com.marek.weatherapp.repositories.model.openweather.coordinates;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

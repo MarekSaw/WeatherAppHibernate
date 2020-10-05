@@ -1,23 +1,25 @@
-package com.marek.weatherapp.repositories.model.openweather.weather;
+package com.marek.weatherapp.repositories.model.openweather.coordinates;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OpenWeatherWeather {
+    @JsonProperty("coord")
     private Coordinates coordinates;
 
-    public void setCoord(Coordinates coordinates) {
+    public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
     }
 
-    public Coordinates getCoord() {
+    public Coordinates getCoordinates() {
         return coordinates;
     }
 
     @Override
     public String toString() {
         return "Coordinates{" +
-                "coord=" + coordinates +
+                "coordinates=" + coordinates +
                 '}';
     }
 }
