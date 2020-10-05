@@ -17,7 +17,7 @@ public class Main {
     public static void main(String[] args) {
 
 
-        WeatherRepository owr = new OpenWeatherRepository(WeatherRepository.readKey(WeatherSource.OPEN_WEATHER));
+//        WeatherRepository owr = new OpenWeatherRepository(WeatherRepository.readKey(WeatherSource.OPEN_WEATHER));
 //        WeatherForecastEntity forecastForCity1 = owr.getForecast("London");
 //        System.out.println(forecastForCity1);
 
@@ -26,7 +26,7 @@ public class Main {
 
 //        callWithCommandLineArguments(owr, args);
 
-//        WeatherRepository owr = new WeatherBitRepository(WeatherRepository.readKey(WeatherSource.WEATHER_BIT));
+        WeatherRepository owr = new WeatherBitRepository(WeatherRepository.readKey(WeatherSource.WEATHER_BIT));
         System.out.println(owr.getForecast("London"));
 
     }

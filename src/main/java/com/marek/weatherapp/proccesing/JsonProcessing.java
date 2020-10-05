@@ -1,9 +1,10 @@
 package com.marek.weatherapp.proccesing;
 
 import com.marek.weatherapp.repositories.model.openweather.daily.OpenWeatherForecast;
-import com.marek.weatherapp.repositories.model.openweather.weather.OpenWeatherWeather;
+import com.marek.weatherapp.repositories.model.openweather.coordinates.OpenWeatherWeather;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.marek.weatherapp.repositories.model.weatherbit.daily.WeatherBitForecast;
 
 public class JsonProcessing {
 
@@ -21,6 +22,16 @@ public class JsonProcessing {
         ObjectMapper objectMapper = new ObjectMapper();
         try{
             return objectMapper.readValue(json, OpenWeatherWeather.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public WeatherBitForecast getForecastFromWeatherBit(String json) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try{
+            return objectMapper.readValue(json, WeatherBitForecast.class);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return null;
