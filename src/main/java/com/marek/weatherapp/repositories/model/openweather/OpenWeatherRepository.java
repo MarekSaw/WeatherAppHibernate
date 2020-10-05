@@ -3,6 +3,7 @@ package com.marek.weatherapp.repositories.model.openweather;
 import com.marek.weatherapp.entities.ForecastEntity;
 import com.marek.weatherapp.entities.WeatherForecastEntity;
 import com.marek.weatherapp.forecastcache.ForecastDao;
+import com.marek.weatherapp.repositories.WeatherRepository;
 import com.marek.weatherapp.repositories.model.WeatherSource;
 import com.marek.weatherapp.repositories.model.openweather.daily.ForecastDaily;
 import com.marek.weatherapp.repositories.model.openweather.weather.Coordinates;
@@ -14,14 +15,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 
-public class OpenWeatherRepository {
+public class OpenWeatherRepository implements WeatherRepository {
     private final static String URI_PATTERN_WEATHER = "https://api.openweathermap.org/data/2.5/weather?q=%s&appid=%s";
-    private final static String URI_PATTERN_DAILY = "https://api.openweathermap.org/data/2.5/" +
-            "onecall?lat=%f&lon=%f&exclude=minutely,hourly&units=metric&appid=%s";
+    private final static String URI_PATTERN_DAILY = "https://api.openweathermap.org/data/2.5/onecall?lat=%f&lon=%f&exclude=minutely,hourly&units=metric&appid=%s";
     private final static LocalDate TOMORROW = LocalDate.now().plusDays(1);
 
     private final String apiKey;
@@ -48,8 +47,8 @@ public class OpenWeatherRepository {
     }
 
     public WeatherForecastEntity getForecast(double latitude, double longitude, LocalDate date) {
-        ForecastEntity previousForecast = findCachedForecast(latitude,longitude,date);
-        if(previousForecast != null) {
+        ForecastEntity previousForecast = findCachedForecast(latitude, longitude, date);
+        if (previousForecast != null) {
             System.out.println("Returning cached result!");
             return previousForecast.getWeatherForecast();
         }
@@ -65,8 +64,8 @@ public class OpenWeatherRepository {
     }
 
     public WeatherForecastEntity getForecast(String city, LocalDate date) {
-        ForecastEntity previousForecast = findCachedForecast(city,date);
-        if(previousForecast != null) {
+        ForecastEntity previousForecast = findCachedForecast(city, date);
+        if (previousForecast != null) {
             System.out.println("Returning cached result!");
             return previousForecast.getWeatherForecast();
         }
@@ -82,7 +81,7 @@ public class OpenWeatherRepository {
         String uri = String.format(URI_PATTERN_WEATHER, city, apiKey);
         try {
             return jsonP.getCoordinatesFromOpenWeather(Request.Get(uri).execute().returnContent().asString()).getCoord();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
@@ -99,16 +98,16 @@ public class OpenWeatherRepository {
         List<ForecastDaily> dailies = openWeatherForecast.getForecastDaily();
         return WeatherForecastMapper.fromOpenWeatherForecast(
                 dailies.stream()
-                .filter(d -> LocalDate.ofEpochDay(d.getDt()/(3600*24)).equals(date))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Nie ma prognozy na podany dzień")));
+                        .filter(d -> LocalDate.ofEpochDay(d.getDt() / (3600 * 24)).equals(date))
+                        .findFirst()
+                        .orElseThrow(() -> new RuntimeException("There is no forecast for given date")));
     }
 
-    private ForecastEntity findCachedForecast(double latitude, double longitude, LocalDate date){
+    private ForecastEntity findCachedForecast(double latitude, double longitude, LocalDate date) {
         return forecastDao.findWeatherForecastForLocalization(WeatherSource.OPEN_WEATHER, String.format("%f;%f", latitude, longitude), date);
     }
 
-    private ForecastEntity findCachedForecast(String city, LocalDate date){
+    private ForecastEntity findCachedForecast(String city, LocalDate date) {
         return forecastDao.findWeatherForecastForLocalization(WeatherSource.OPEN_WEATHER, city, date);
     }
 
