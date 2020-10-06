@@ -17,6 +17,17 @@ public class WeatherForecastEntity {
     @Column(name = "wind_deg")
     private double windDeg;
 
+    public WeatherForecastEntity() {
+    }
+
+    public WeatherForecastEntity(double temperature, double pressure, double humidity, double windSpeed, double windDeg) {
+        this.temperature = temperature;
+        this.pressure = pressure;
+        this.humidity = humidity;
+        this.windSpeed = windSpeed;
+        this.windDeg = windDeg;
+    }
+
     public long getId() {
         return id;
     }
