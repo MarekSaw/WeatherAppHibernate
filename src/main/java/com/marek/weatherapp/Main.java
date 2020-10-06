@@ -46,7 +46,7 @@ public class Main {
                 weatherForecastEntity = getAverageForecast(lat, lon, date);
             }
 
-            System.out.println(weatherForecastEntity + " for date " + date);
+            showForecast(weatherForecastEntity, date);
 
         }
 
@@ -91,6 +91,14 @@ public class Main {
                 (weatherBit.getWindDeg() + openWeather.getWindDeg()) / 2);
     }
 
+    private static void showForecast(WeatherForecastEntity wfe, LocalDate date) {
+        System.out.println("Forecast for date: " + date);
+        System.out.println("Temperature: " + wfe.getTemperature() + " \u00B0C");
+        System.out.println("Pressure: " + wfe.getPressure() + " hPa");
+        System.out.println("Humidity: " + wfe.getHumidity() + " %");
+        System.out.println("Wind speed: " + wfe.getWindSpeed() + " m/s");
+        System.out.println("Wind direction: " + wfe.getWindDeg() + " \u00B0");
+    }
 
 }
 
