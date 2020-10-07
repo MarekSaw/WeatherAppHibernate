@@ -44,10 +44,12 @@ public class OpenWeatherRepository implements WeatherRepository {
         return keys.get(0);
     }
 
+    @Override
     public WeatherForecastEntity getForecast(double latitude, double longitude) {
         return getForecast(latitude, longitude, TOMORROW);
     }
 
+    @Override
     public WeatherForecastEntity getForecast(double latitude, double longitude, LocalDate date) {
         ForecastEntity previousForecast = CachedForecastRepository.findCachedForecast(latitude, longitude, date, SOURCE);
         if (previousForecast != null) {
@@ -61,10 +63,12 @@ public class OpenWeatherRepository implements WeatherRepository {
         return weatherForecastEntity;
     }
 
+    @Override
     public WeatherForecastEntity getForecast(String city) {
         return getForecast(city, TOMORROW);
     }
 
+    @Override
     public WeatherForecastEntity getForecast(String city, LocalDate date) {
         ForecastEntity previousForecast = CachedForecastRepository.findCachedForecast(city, date, SOURCE);
         if (previousForecast != null) {

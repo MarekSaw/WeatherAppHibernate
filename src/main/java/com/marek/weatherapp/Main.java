@@ -2,18 +2,16 @@ package com.marek.weatherapp;
 
 import com.marek.weatherapp.forecastcache.entities.WeatherForecastEntity;
 import com.marek.weatherapp.repositories.WeatherRepository;
-import com.marek.weatherapp.repositories.model.openweather.OpenWeatherRepository;
-import com.marek.weatherapp.repositories.model.weatherbit.WeatherBitRepository;
+import com.marek.weatherapp.repositories.model.CompoundWeatherRepository;
+import com.marek.weatherapp.repositories.model.WeatherSource;
 import org.apache.commons.cli.*;
 
 import java.time.LocalDate;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Objects;
 
 public class Main {
-    private static final WeatherRepository WEATHER_BIT = new WeatherBitRepository(WeatherBitRepository.readKey());
-    private static final WeatherRepository OPEN_WEATHER = new OpenWeatherRepository(OpenWeatherRepository.readKey());
-
 
     public static void main(String[] args) {
 
@@ -22,9 +20,11 @@ public class Main {
     }
 
     private static void callWithCommandLineArguments(String[] args) {
+        WeatherRepository weatherRepository = new CompoundWeatherRepository(List.of(WeatherSource.OPEN_WEATHER, WeatherSource.WEATHER_BIT));
         CommandLine commandLine = parseCommandLine(args);
         LocalDate tomorrow = LocalDate.now().plusDays(1);
         WeatherForecastEntity weatherForecastEntity;
+
 
         if (Objects.nonNull(commandLine)) {
             // get arguments from command line
@@ -40,9 +40,9 @@ public class Main {
 
             // get average forecast for given localization and date
             if (city != null) {
-                weatherForecastEntity = getAverageForecast(city, date);
+                weatherForecastEntity = weatherRepository.getForecast(city, date);
             } else {
-                weatherForecastEntity = getAverageForecast(lat, lon, date);
+                weatherForecastEntity = weatherRepository.getForecast(lat, lon, date);
             }
 
             showForecast(weatherForecastEntity, date);
@@ -64,30 +64,6 @@ public class Main {
             System.out.println("An error occurred during argument parsing");
             return null;
         }
-    }
-
-    private static WeatherForecastEntity getAverageForecast(String city, LocalDate date) {
-        WeatherForecastEntity weatherBit = WEATHER_BIT.getForecast(city, date);
-        WeatherForecastEntity openWeather = OPEN_WEATHER.getForecast(city, date);
-
-        return new WeatherForecastEntity(
-                (weatherBit.getTemperature() + openWeather.getTemperature()) / 2,
-                (weatherBit.getPressure() + openWeather.getPressure()) / 2,
-                (weatherBit.getHumidity() + openWeather.getHumidity()) / 2,
-                (weatherBit.getWindSpeed() + openWeather.getWindSpeed()) / 2,
-                (weatherBit.getWindDeg() + openWeather.getWindDeg()) / 2);
-    }
-
-    private static WeatherForecastEntity getAverageForecast(double latitude, double longitude, LocalDate date) {
-        WeatherForecastEntity weatherBit = WEATHER_BIT.getForecast(latitude, longitude, date);
-        WeatherForecastEntity openWeather = OPEN_WEATHER.getForecast(latitude, longitude, date);
-
-        return new WeatherForecastEntity(
-                (weatherBit.getTemperature() + openWeather.getTemperature()) / 2,
-                (weatherBit.getPressure() + openWeather.getPressure()) / 2,
-                (weatherBit.getHumidity() + openWeather.getHumidity()) / 2,
-                (weatherBit.getWindSpeed() + openWeather.getWindSpeed()) / 2,
-                (weatherBit.getWindDeg() + openWeather.getWindDeg()) / 2);
     }
 
     private static void showForecast(WeatherForecastEntity wfe, LocalDate date) {
