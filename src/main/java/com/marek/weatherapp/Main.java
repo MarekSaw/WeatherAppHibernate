@@ -1,8 +1,7 @@
 package com.marek.weatherapp;
 
-import com.marek.weatherapp.entities.WeatherForecastEntity;
+import com.marek.weatherapp.forecastcache.entities.WeatherForecastEntity;
 import com.marek.weatherapp.repositories.WeatherRepository;
-import com.marek.weatherapp.repositories.model.WeatherSource;
 import com.marek.weatherapp.repositories.model.openweather.OpenWeatherRepository;
 import com.marek.weatherapp.repositories.model.weatherbit.WeatherBitRepository;
 import org.apache.commons.cli.*;
@@ -12,8 +11,8 @@ import java.util.InputMismatchException;
 import java.util.Objects;
 
 public class Main {
-    private static final WeatherRepository WEATHER_BIT = new WeatherBitRepository(WeatherRepository.readKey(WeatherSource.WEATHER_BIT));
-    private static final WeatherRepository OPEN_WEATHER = new OpenWeatherRepository(WeatherRepository.readKey(WeatherSource.OPEN_WEATHER));
+    private static final WeatherRepository WEATHER_BIT = new WeatherBitRepository(WeatherBitRepository.readKey());
+    private static final WeatherRepository OPEN_WEATHER = new OpenWeatherRepository(OpenWeatherRepository.readKey());
 
 
     public static void main(String[] args) {

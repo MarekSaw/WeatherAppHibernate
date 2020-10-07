@@ -1,7 +1,7 @@
-package com.marek.weatherapp.repositories.model.openweather;
+package com.marek.weatherapp.repositories.model;
 
 import com.marek.weatherapp.repositories.model.openweather.daily.ForecastDaily;
-import com.marek.weatherapp.entities.WeatherForecastEntity;
+import com.marek.weatherapp.forecastcache.entities.WeatherForecastEntity;
 import com.marek.weatherapp.repositories.model.weatherbit.daily.WeatherBitDaily;
 
 public class WeatherForecastMapper {

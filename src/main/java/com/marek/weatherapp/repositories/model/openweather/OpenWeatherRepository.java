@@ -1,9 +1,10 @@
 package com.marek.weatherapp.repositories.model.openweather;
 
-import com.marek.weatherapp.entities.ForecastEntity;
-import com.marek.weatherapp.entities.WeatherForecastEntity;
-import com.marek.weatherapp.forecastcache.ForecastDao;
+import com.marek.weatherapp.forecastcache.entities.ForecastEntity;
+import com.marek.weatherapp.forecastcache.entities.WeatherForecastEntity;
 import com.marek.weatherapp.repositories.WeatherRepository;
+import com.marek.weatherapp.forecastcache.CachedForecastRepository;
+import com.marek.weatherapp.repositories.model.WeatherForecastMapper;
 import com.marek.weatherapp.repositories.model.WeatherSource;
 import com.marek.weatherapp.repositories.model.openweather.daily.ForecastDaily;
 import com.marek.weatherapp.repositories.model.openweather.coordinates.Coordinates;
@@ -12,21 +13,35 @@ import com.marek.weatherapp.proccesing.JsonProcessing;
 import org.apache.http.client.fluent.Request;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class OpenWeatherRepository extends com.marek.weatherapp.repositories.model.WeatherRepository implements WeatherRepository {
+public class OpenWeatherRepository implements WeatherRepository {
     private final static String URI_PATTERN_WEATHER = "https://api.openweathermap.org/data/2.5/weather?q=%s&appid=%s";
     private final static String URI_PATTERN_DAILY = "https://api.openweathermap.org/data/2.5/onecall?lat=%f&lon=%f&exclude=minutely,hourly&units=metric&appid=%s";
     private final static WeatherSource SOURCE = WeatherSource.OPEN_WEATHER;
     private final static LocalDate TOMORROW = LocalDate.now().plusDays(1);
     private final static JsonProcessing jsonP = new JsonProcessing();
-    private final static ForecastDao forecastDao = new ForecastDao();
 
+    private String apiKey;
 
     public OpenWeatherRepository(String apiKey) {
-        super(apiKey);
+        this.apiKey = apiKey;
+    }
+
+    public static String readKey() {
+        List<String> keys;
+        try {
+            keys = new ArrayList<>(Files.readAllLines(Paths.get("key.txt")));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+        return keys.get(0);
     }
 
     public WeatherForecastEntity getForecast(double latitude, double longitude) {
@@ -34,7 +49,7 @@ public class OpenWeatherRepository extends com.marek.weatherapp.repositories.mod
     }
 
     public WeatherForecastEntity getForecast(double latitude, double longitude, LocalDate date) {
-        ForecastEntity previousForecast = findCachedForecast(latitude, longitude, date, SOURCE);
+        ForecastEntity previousForecast = CachedForecastRepository.findCachedForecast(latitude, longitude, date, SOURCE);
         if (previousForecast != null) {
             System.out.println("Returning cached result!");
             return previousForecast.getWeatherForecast();
@@ -42,7 +57,7 @@ public class OpenWeatherRepository extends com.marek.weatherapp.repositories.mod
         String uri = String.format(URI_PATTERN_DAILY, latitude, longitude, apiKey);
         WeatherForecastEntity weatherForecastEntity = getForecastForDay(uri, date);
 
-        saveCachedForecast(weatherForecastEntity, latitude, longitude, date, SOURCE);
+        CachedForecastRepository.saveCachedForecast(weatherForecastEntity, latitude, longitude, date, SOURCE);
         return weatherForecastEntity;
     }
 
@@ -51,7 +66,7 @@ public class OpenWeatherRepository extends com.marek.weatherapp.repositories.mod
     }
 
     public WeatherForecastEntity getForecast(String city, LocalDate date) {
-        ForecastEntity previousForecast = findCachedForecast(city, date, SOURCE);
+        ForecastEntity previousForecast = CachedForecastRepository.findCachedForecast(city, date, SOURCE);
         if (previousForecast != null) {
             System.out.println("Returning cached result!");
             return previousForecast.getWeatherForecast();
@@ -59,7 +74,7 @@ public class OpenWeatherRepository extends com.marek.weatherapp.repositories.mod
         Coordinates coordinates = getCoordinates(city);
         WeatherForecastEntity weatherForecastEntity = getForecast(coordinates.getLatitude(), coordinates.getLongitude(), date);
 
-        saveCachedForecast(weatherForecastEntity, city, date, SOURCE);
+        CachedForecastRepository.saveCachedForecast(weatherForecastEntity, city, date, SOURCE);
         return weatherForecastEntity;
     }
 
