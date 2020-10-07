@@ -1,4 +1,4 @@
-package com.marek.weatherapp.entities;
+package com.marek.weatherapp.forecastcache.entities;
 
 import com.marek.weatherapp.repositories.model.WeatherSource;
 

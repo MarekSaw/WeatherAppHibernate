@@ -1,8 +1,7 @@
 package com.marek.weatherapp.forecastcache;
 
 import com.marek.weatherapp.config.DatabaseConfig;
-import com.marek.weatherapp.entities.ForecastEntity;
-import com.marek.weatherapp.entities.WeatherForecastEntity;
+import com.marek.weatherapp.forecastcache.entities.ForecastEntity;
 import com.marek.weatherapp.repositories.model.WeatherSource;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -12,22 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 
-public class ForecastDao {
-
-    public void addForecast(ForecastEntity forecast){
-        try (Session session = DatabaseConfig.getSessionFactory().openSession()){
-            Transaction transaction = session.beginTransaction();
-            session.save(forecast);
-            transaction.commit();
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<ForecastEntity> getForecasts() {
-        try (Session session = DatabaseConfig.getSessionFactory().openSession()) {
-            return session.createQuery("select f from ForecastEntity f").list();
-        }
-    }
+public class ForecastDao extends GenericDao<ForecastEntity>{
 
     @SuppressWarnings("unchecked")
     public ForecastEntity findWeatherForecastForLocalization(WeatherSource source, String localization, LocalDate forecastDate) {

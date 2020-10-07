@@ -1,7 +1,7 @@
 package com.marek.weatherapp.config;
 
-import com.marek.weatherapp.entities.ForecastEntity;
-import com.marek.weatherapp.entities.WeatherForecastEntity;
+import com.marek.weatherapp.forecastcache.entities.ForecastEntity;
+import com.marek.weatherapp.forecastcache.entities.WeatherForecastEntity;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
