@@ -8,7 +8,6 @@ public class WeatherForecastEntity {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     private double temperature;
     private double pressure;
     private double humidity;

@@ -4,7 +4,6 @@ import com.marek.weatherapp.config.DatabaseConfig;
 import com.marek.weatherapp.forecastcache.entities.ForecastEntity;
 import com.marek.weatherapp.repositories.model.WeatherSource;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

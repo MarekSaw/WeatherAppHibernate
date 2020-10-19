@@ -12,11 +12,8 @@ public class ForecastEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-
     @OneToOne(cascade = CascadeType.ALL)
     private WeatherForecastEntity weatherForecast;
-
     private WeatherSource source;
     private String localization;
     private LocalDate forecastDate;

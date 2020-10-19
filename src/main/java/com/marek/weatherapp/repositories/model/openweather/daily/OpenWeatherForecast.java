@@ -11,7 +11,6 @@ public class OpenWeatherForecast {
     private double lat;
     private double lon;
     private String timezone;
-
     @JsonProperty("timezone_offset")
     private int timezoneOffset;
     @JsonProperty("current")

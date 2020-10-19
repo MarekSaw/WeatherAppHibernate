@@ -24,6 +24,7 @@ public class DatabaseConfig {
     private static Properties getSettings() {
         Properties settings = new Properties();
 
+        // config for MySql database
         /*settings.put(Environment.URL, "jdbc:mysql://localhost:3306/forecast?serverTimezone=EST");
         settings.put(Environment.USER, "root");
         settings.put(Environment.PASS, "kursJava2020");
@@ -34,15 +35,13 @@ public class DatabaseConfig {
         settings.put(Environment.DRIVER, "com.mysql.jdbc.Driver");
         settings.put(Environment.DIALECT,"org.hibernate.dialect.MySQL5Dialect");*/
 
+        // config for h2 database
         settings.put(Environment.URL, "jdbc:h2:file:./test.db");
         settings.put(Environment.USER, "root");
         settings.put(Environment.PASS, "");
         settings.put(Environment.SHOW_SQL, "true");
         settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
         settings.put(Environment.HBM2DDL_AUTO, "create-drop");
-        // optional in most cases
-        //settings.put(Environment.DRIVER, "com.mysql.jdbc.Driver");
-        //settings.put(Environment.DIALECT,"org.hibernate.dialect.MySQL5Dialect");
 
         return settings;
     }

@@ -4,6 +4,8 @@ import com.marek.weatherapp.forecastcache.entities.WeatherForecastEntity;
 import com.marek.weatherapp.repositories.WeatherRepository;
 import com.marek.weatherapp.repositories.model.CompoundWeatherRepository;
 import com.marek.weatherapp.repositories.model.WeatherSource;
+import com.marek.weatherapp.repositories.model.openweather.OpenWeatherRepository;
+import com.marek.weatherapp.repositories.model.weatherbit.WeatherBitRepository;
 import org.apache.commons.cli.*;
 
 import java.time.LocalDate;
@@ -20,7 +22,10 @@ public class Main {
     }
 
     private static void callWithCommandLineArguments(String[] args) {
-        WeatherRepository weatherRepository = new CompoundWeatherRepository(List.of(WeatherSource.OPEN_WEATHER, WeatherSource.WEATHER_BIT));
+        WeatherRepository weatherRepository = new CompoundWeatherRepository(List.of(
+                new OpenWeatherRepository(OpenWeatherRepository.readKey()),
+                new WeatherBitRepository(WeatherBitRepository.readKey())
+        ));
         CommandLine commandLine = parseCommandLine(args);
         LocalDate tomorrow = LocalDate.now().plusDays(1);
         WeatherForecastEntity weatherForecastEntity;

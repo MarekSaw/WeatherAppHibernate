@@ -9,44 +9,38 @@ import java.util.stream.Collectors;
 
 public class CompoundWeatherRepository implements WeatherRepository {
     private final LocalDate TOMORROW = LocalDate.now().plusDays(1);
-    private final List<WeatherSource> sourceList;
+    private final List<WeatherRepository> repositoryList;
 
-    public CompoundWeatherRepository(List<WeatherSource> sourceList) {
-        this.sourceList = sourceList;
+    public CompoundWeatherRepository(List<WeatherRepository> repositoryList) {
+        this.repositoryList = repositoryList;
     }
 
     @Override
     public WeatherForecastEntity getForecast(String city) {
-        return getAverageForecast(getRepositoryList(sourceList).stream()
+        return getAverageForecast(repositoryList.stream()
                 .map(r -> r.getForecast(city, TOMORROW))
                 .collect(Collectors.toList()));
     }
 
     @Override
     public WeatherForecastEntity getForecast(String city, LocalDate date) {
-        return getAverageForecast(getRepositoryList(sourceList).stream()
+        return getAverageForecast(repositoryList.stream()
                 .map(r -> r.getForecast(city, date))
                 .collect(Collectors.toList()));
     }
 
     @Override
     public WeatherForecastEntity getForecast(double lat, double lon) {
-        return getAverageForecast(getRepositoryList(sourceList).stream()
+        return getAverageForecast(repositoryList.stream()
                 .map(r -> r.getForecast(lat, lon, TOMORROW))
                 .collect(Collectors.toList()));
     }
 
     @Override
     public WeatherForecastEntity getForecast(double lat, double lon, LocalDate date) {
-        return getAverageForecast(getRepositoryList(sourceList).stream()
+        return getAverageForecast(repositoryList.stream()
                 .map(r -> r.getForecast(lat, lon, date))
                 .collect(Collectors.toList()));
-    }
-
-    private static List<WeatherRepository> getRepositoryList(List<WeatherSource> sourceList) {
-        return sourceList.stream()
-                .map(WeatherSource::getWeatherRepository)
-                .collect(Collectors.toList());
     }
 
     private static WeatherForecastEntity getAverageForecast(List<WeatherForecastEntity> list) {
