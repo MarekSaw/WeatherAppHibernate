@@ -1,6 +1,6 @@
 # WeatherApp
 WeatherApp is a Java Command Line Application for checking weather forecast in any location of given day.
-App obtains forecasts from two weather APIs then response with averaged parameters values. It uses h2 data
+App obtains forecasts from two weather APIs then response with averaged parameters values. It uses h2/MySql data
 base to store active forecasts in order to reuse them without api calls.
 
 ### APIs
@@ -22,8 +22,8 @@ for tomorrow.
 App responses with parameters below:
 <ul>forecast date,</ul>
 <ul>temperature (Celsius degree),</ul>
-<ul>pressure (hPa) date,</ul>
-<ul>humidity (%) date,</ul>
+<ul>pressure (hPa),</ul>
+<ul>humidity (%),</ul>
 <ul>wind speed (m/s),</ul>
 <ul>wind degree (degree).</ul>
     
